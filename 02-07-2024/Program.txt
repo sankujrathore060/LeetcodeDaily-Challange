@@ -1,0 +1,26 @@
+class Solution {
+    public int[] intersect(int[] nums1, int[] nums2) {
+        int nums1Size = nums1.length;
+        int nums2Size = nums2.length;
+        int nums1Element = 0, nums2Element = 0, tempElement = 0;
+        Arrays.sort(nums1);
+        Arrays.sort(nums2);
+        while(nums1Element < nums1Size && nums2Element < nums2Size)
+        {
+            if(nums1[nums1Element] < nums2[nums2Element])
+            {
+                nums1Element++;
+            }
+            else if(nums1[nums1Element] > nums2[nums2Element])
+            {
+                nums2Element++;
+            }
+            else
+            {
+                nums1[tempElement++] = nums1[nums1Element++];
+                nums2Element++;
+            }
+        }
+        return Arrays.copyOfRange(nums1,0,tempElement);
+    }
+}
