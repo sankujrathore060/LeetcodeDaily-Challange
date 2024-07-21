@@ -1,0 +1,74 @@
+### Approach
+
+The given solution involves several steps to construct a matrix using topological sorting for both row and column constraints. Here is a detailed breakdown:
+
+1. **Topological Sort Function (`TopologicalSort`)**:
+    - **Input**: `rowGraph`, `k`
+    - **Initialization**: Create an `indegree` list to keep track of the number of incoming edges for each node.
+    - **Calculate Indegree**: Iterate over the `rowGraph` and increment the indegree of the destination nodes.
+    - **Queue Initialization**: Initialize a queue with nodes having 0 indegree.
+    - **Process Queue**: Dequeue nodes, add them to the result list, and decrease the indegree of their children. Enqueue children with 0 indegree.
+    - **Output**: Return the topological order of nodes.
+
+2. **Merge Condition Function (`MergeCondition`)**:
+    - **Input**: `condition`, `k`
+    - **Graph Creation**: Create a graph representation from the given conditions.
+    - **Topological Sort**: Call `TopologicalSort` on the graph and return the result.
+
+3. **Build Matrix Function (`BuildMatrix`)**:
+    - **Input**: `k`, `rowConditions`, `colConditions`
+    - **Topological Sort**: Get the topological sort for both row and column conditions.
+    - **Validation**: Check if the topological sort results are valid.
+    - **Matrix Construction**: Construct the matrix based on the topological sorts of rows and columns.
+
+### Time and Space Complexity
+
+#### Topological Sort Function (`TopologicalSort`)
+
+- **Time Complexity**: 
+  - Calculating indegree takes O(E) time where E is the number of edges.
+  - Initializing the queue takes O(V) time where V is the number of nodes.
+  - Processing the queue takes O(V + E) time because each node and each edge is processed once.
+  - Overall: O(V + E)
+
+- **Space Complexity**:
+  - Storing the indegree list takes O(V) space.
+  - The queue can take up to O(V) space in the worst case.
+  - The adjacency list `rowGraph` takes O(E) space.
+  - Overall: O(V + E)
+
+#### Merge Condition Function (`MergeCondition`)
+
+- **Time Complexity**:
+  - Creating the graph takes O(E) time.
+  - Calling `TopologicalSort` takes O(V + E) time.
+  - Overall: O(V + E)
+
+- **Space Complexity**:
+  - Storing the graph takes O(E) space.
+  - Calling `TopologicalSort` has space complexity O(V + E).
+  - Overall: O(V + E)
+
+#### Build Matrix Function (`BuildMatrix`)
+
+- **Time Complexity**:
+  - Calling `MergeCondition` twice, each taking O(V + E), results in O(2(V + E)) = O(V + E).
+  - Constructing the matrix involves iterating over the topological sorts and constructing the matrix in O(V^2) time.
+  - Overall: O(V + E + V^2)
+
+- **Space Complexity**:
+  - Storing the row and column topological sorts takes O(V) space each.
+  - Constructing the matrix takes O(V^2) space.
+  - Overall: O(V + E + V^2)
+
+In this context, V = k and E depends on the number of conditions provided. The complexities are:
+
+- **Topological Sort**: O(k + E)
+- **Merge Condition**: O(k + E)
+- **Build Matrix**: O(k + E + k^2)
+
+For both time and space complexity, E represents the number of conditions, and k represents the number of nodes (or size of the matrix).
+
+---
+
+This plain text should be compatible with Notepad++ for easy reading and editing.

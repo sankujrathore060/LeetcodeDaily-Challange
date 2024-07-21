@@ -1,0 +1,56 @@
+public class Solution {
+    public List<int> TopologicalSort(List<List<int>> rowGraph, int k){
+        List<int> indegree = new List<int>();
+        for(int index = 0; index <=k; index++){
+            indegree.Add(0);
+        }
+
+        foreach(var edges in rowGraph){
+            foreach(var edge in edges){
+                  indegree[edge]++;     
+            }
+        }
+        
+        Queue<int> queue = new Queue<int>();
+        for(int node = 1; node < indegree.Count; node++){
+            if(indegree[node] == 0) queue.Enqueue(node);
+        }       
+
+        List<int> ans = new List<int>();
+        while(queue.Count > 0){
+            int frant = queue.Dequeue();
+            ans.Add(frant);
+            foreach(var child in rowGraph[frant]){
+                indegree[child]--;
+                if(indegree[child] == 0) queue.Enqueue(child);
+            }
+        }
+        return ans;
+    }
+
+    public List<int> MergeCondition(int[][] condition, int k){
+        List<List<int>> rowGraph = new List<List<int>>();
+        for(int index = 0; index <= k; index++) rowGraph.Add(new List<int>());
+        foreach(var item in condition){
+            int above = item[0], below = item[1];
+            rowGraph[above].Add(below); 
+        }
+        return TopologicalSort(rowGraph, k);
+    }
+
+    public int[][] BuildMatrix(int k, int[][] rowConditions, int[][] colConditions) {    
+        List<int> rowTopoSort = MergeCondition(rowConditions, k);
+        if(rowTopoSort.Count != k) return new int[0][];
+
+        List<int> colTopoSort = MergeCondition(colConditions, k);
+        if(colTopoSort.Count != k) return new int[0][];
+
+        int[][] ans = new int[k][];
+        for(int index = 0; index < k; index++) ans[index] = new int[k];
+        for(int row = 0; row < rowTopoSort.Count; row++){
+            int col = colTopoSort.IndexOf(rowTopoSort[row]);
+            ans[row][col] = rowTopoSort[row];
+        }
+        return ans;
+    }
+}
